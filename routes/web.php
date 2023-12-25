@@ -1,5 +1,8 @@
 <?php
 
+use App\Livewire\CategoriesList;
+use App\Livewire\Category;
+use App\Livewire\ProductForm;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +27,15 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+Route::controller(ProductForm::class)->prefix('products')->name('products.')->group(function () {
+    Route::get('/create', 'create');
+    Route::post('/{product}', 'update');
+});
+// Route::get('products/create', ProductForm::class)->name('products.create');
+// Route::get('products/{product}', ProductForm::class)->name('products.edit');
+Route::get('categories', Category::class)->name('categories.index');
+// Route::controller(Category::class)->group(function () {
+//     Route::get('categories', 'render')->name('categories.index');
+//     Route::post('/orders', 'store');
+// });
