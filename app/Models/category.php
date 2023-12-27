@@ -14,6 +14,11 @@ class category extends Model
         'slug',
         'description',
         'is_active',
-        'modified_at',
+        'position',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -32,9 +32,9 @@ Route::controller(ProductForm::class)->prefix('products')->name('products.')->gr
     Route::get('/create', 'create');
     Route::post('/{product}', 'update');
 });
-// Route::get('products/create', ProductForm::class)->name('products.create');
+Route::get('categories', CategoriesList::class)->name('categories.index');
 // Route::get('products/{product}', ProductForm::class)->name('products.edit');
-Route::get('categories', Category::class)->name('categories.index');
+// Route::get('categories', Category::class)->name('categories.index');
 // Route::controller(Category::class)->group(function () {
 //     Route::get('categories', 'render')->name('categories.index');
 //     Route::post('/orders', 'store');

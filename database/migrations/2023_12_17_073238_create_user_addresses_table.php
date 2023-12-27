@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('address_line1')->nullable();
             $table->string('address_line2')->nullable();
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();
             $table->timestamps();
         });
     }
