@@ -28,11 +28,8 @@ Route::view('profile', 'profile')
 
 require __DIR__.'/auth.php';
 
-Route::controller(ProductForm::class)->prefix('products')->name('products.')->group(function () {
-    Route::get('/create', 'create');
-    Route::post('/{product}', 'update');
-});
 Route::get('categories', CategoriesList::class)->name('categories.index');
+
 // Route::get('products/{product}', ProductForm::class)->name('products.edit');
 // Route::get('categories', Category::class)->name('categories.index');
 // Route::controller(Category::class)->group(function () {

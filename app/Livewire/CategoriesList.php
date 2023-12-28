@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\category;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoriesList extends Component
 {
@@ -15,45 +17,27 @@ class CategoriesList extends Component
     public $description;
     public int $editedCategoryId = 0;
     public array $active = [];
-
     public bool $showModal = false;
     public function openModal()
     {
         $this->showModal = true;
     }
+    public function startEdit($categoryId)
+    {
+        $this->editedCategoryId = $categoryId;
+    }
     public function editCategory($categoryId)
     {
         $this->editedCategoryId = $categoryId;
         $category = category::find($categoryId);
-        // $this->name = $category->name;
-        // $this->slug = $category->slug;
-        // $this->description = $category->description;
-        // $this->showModal = true;
+        $this->name = $category->name;
+
+        $this->slug = Str::slug($this->name);
+        $this->description = $category->description;
     }
-
-    public function editedCategory()
+    public function closeModal()
     {
-        $this->validate();
-
-        category::where('id', $this->editedCategoryId)->update([
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'description' => $this->description,
-        ]);
-
-        $this->reset('showModal');
-    }
-    public function updateCategory()
-    {
-        $this->validate();
-
-        category::where('id', $this->editedCategoryId)->update([
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'description' => $this->description,
-        ]);
-
-        $this->reset('showModal');
+        $this->showModal = false;
     }
     public function mount()
     {
@@ -71,8 +55,8 @@ class CategoriesList extends Component
     protected function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', 'unique:categories,name'],
-            'slug' => ['nullable', 'string', 'min:3', 'max:255', 'unique:categories,slug'],
+            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('categories', 'name')->ignore($this->editedCategoryId)],
+            'slug' => ['nullable', 'string', 'min:3', 'max:255', Rule::unique('categories', 'slug')->ignore($this->editedCategoryId)],
             'description' => ['required', 'string'], // Add any additional rules for description
         ];
     }
@@ -83,18 +67,33 @@ class CategoriesList extends Component
     public function save()
     {
         $this->validate();
-
-        category::create([
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'description' => $this->description,
-        ]);
-
-        $this->reset('showModal');
+        $this->slug = Str::slug($this->name);
+        if ($this->editedCategoryId) {
+            $category = category::find($this->editedCategoryId);
+            $category->update([
+                'name' => $this->name,
+                'slug' => $this->slug,
+                'description' => $this->description,
+            ]);
+            $this->resetValidation();
+            $this->reset('showModal', 'editedCategoryId');
+        } else {
+            $category = category::create([
+                'name' => $this->name,
+                'slug' => $this->slug,
+                'description' => $this->description,
+            ]);
+            $this->resetValidation();
+            $this->reset('showModal', 'editedCategoryId');
+        }
     }
     public function delete($id)
     {
         category::where('id', $id)->delete();
+    }
+    public function cancelCategoryEdit()
+    {
+        $this->reset('editedCategoryId');
     }
     public function render()
     {

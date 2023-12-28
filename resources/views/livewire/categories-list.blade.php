@@ -36,7 +36,9 @@
                                         <span
                                             class="text-xs font-medium tracking-wider leading-4 text-gray-500 uppercase">Active</span>
                                     </th>
-                                    <th class="px-6 py-3 text-left bg-gray-50 w-56">
+                                    <th class="px-6 py-3 text-left bg-gray-50">
+                                        <span
+                                            class="text-xs font-medium tracking-wider leading-4 text-gray-500 uppercase">Actions</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -58,17 +60,25 @@
                                         {{-- Inline Edit Start --}}
                                         <td
                                             class="@if ($editedCategoryId !== $category->id) hidden @endif px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <x-text-input wire:model="category.name" id="category.name"
+                                            <x-text-input wire:model="name" id="category.name"
                                                 class="py-2 pr-4 pl-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
-                                            @error('category.name')
+                                            @error('name')
                                                 <span class="text-sm text-red-500">{{ $message }}</span>
                                             @enderror
                                         </td>
                                         <td
                                             class="@if ($editedCategoryId !== $category->id) hidden @endif px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <x-text-input wire:model="category.slug" id="category.slug"
+                                            <x-text-input wire:model="slug" id="category.slug"
                                                 class="py-2 pr-4 pl-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
-                                            @error('category.slug')
+                                            @error('slug')
+                                                <span class="text-sm text-red-500">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td
+                                            class="@if ($editedCategoryId !== $category->id) hidden @endif px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
+                                            <x-text-input wire:model="description" id="category.description"
+                                                class="py-2 pr-4 pl-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
+                                            @error('description')
                                                 <span class="text-sm text-red-500">{{ $message }}</span>
                                             @enderror
                                         </td>
@@ -107,7 +117,7 @@
                                                     Cancel
                                                 </x-primary-button>
                                             @else
-                                                <x-primary-button wire:click="$editedCategory({{ $category->id }})">
+                                                <x-primary-button wire:click="editCategory({{ $category->id }})">
                                                     Edit
                                                 </x-primary-button>
                                                 <button wire:click="delete({{ $category->id }})"
@@ -148,16 +158,6 @@
                         <input wire:model="name" id="category.name"
                             class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
                         @error('name')
-                            <span class="text-sm text-red-500">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-2 w-full">
-                        <label class="block text-sm font-medium text-gray-700" for="category.slug">
-                            Slug
-                        </label>
-                        <input wire:model="slug" id="category.slug"
-                            class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
-                        @error('slug')
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
