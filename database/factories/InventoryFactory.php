@@ -17,7 +17,8 @@ class InventoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'qantity' => $this->faker->randomNumber(2),
+            'modified_at' => $this->faker->date,
         ];
     }
 }

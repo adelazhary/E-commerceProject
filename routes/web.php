@@ -3,6 +3,7 @@
 use App\Livewire\CategoriesList;
 use App\Livewire\Category;
 use App\Livewire\ProductForm;
+use App\Livewire\ProductsList;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,14 +26,15 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
-
+// routes/web.php
+Route::get('/register', 'RegistrationController@showRegistrationForm')->name('register');
 require __DIR__.'/auth.php';
+route::group(['middleware' => ['auth']], function () {
+    Route::get('categories', CategoriesList::class)->name('categories.index');
+    Route::get('products', ProductsList::class)->name('products.index');
 
-Route::get('categories', CategoriesList::class)->name('categories.index');
-
-// Route::get('products/{product}', ProductForm::class)->name('products.edit');
-// Route::get('categories', Category::class)->name('categories.index');
-// Route::controller(Category::class)->group(function () {
-//     Route::get('categories', 'render')->name('categories.index');
-//     Route::post('/orders', 'store');
-// });
+    // Route::get('products/create', ProductForm::class)->name('products.create');
+    // Route::get('products/{product}/edit', ProductForm::class)->name('products.edit');
+    // Route::get('categories/create', Category::class)->name('categories.create');
+    // Route::get('categories/{category}/edit', Category::class)->name('categories.edit');
+});

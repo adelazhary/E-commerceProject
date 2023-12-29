@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique()->index();
             $table->text('description')->nullable();
-            $table->decimal('price');
-            $table->string('SKU')->nullable();
-            $table->date('modified_at');
+            $table->integer('price')->default(0);
+            $table->boolean('is_available')->default(false);
+            $table->boolean('is_in_stock')->default(false);
+            $table->integer('amount_in_stock')->default(0);
+            $table->date('modified_at')->nullable();
             $table->timestamps();
         });
     }

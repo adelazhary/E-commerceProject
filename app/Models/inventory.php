@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class inventory extends Model
 {
     use HasFactory;
-
+    protected $fillable=['qantity','modified_at'];
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 
 }

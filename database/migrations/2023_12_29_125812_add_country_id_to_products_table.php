@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('inventory_id');
-            $table->foreign('inventory_id')->references('id')->on('inventories');
-            $table->unsignedBigInteger('discount_id');
-            $table->foreign('discount_id')->references('id')->on('discounts');
-            $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('country_id')->default(1);
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 
@@ -25,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('product', function (Blueprint $table) {
-            //
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['country_id']);
+            $table->dropColumn('country_id');
         });
     }
 };

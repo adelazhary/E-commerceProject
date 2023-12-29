@@ -17,7 +17,11 @@ class DiscountFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'discount_percent' => $this->faker->randomNumber(2),
+            'discription' => $this->faker->text,
+            'active' => $this->faker->boolean,
+            'modified_at' => $this->faker->date,
         ];
     }
 }
