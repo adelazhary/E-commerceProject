@@ -7,16 +7,21 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 
 class CategoriesList extends Component
 {
     use WithPagination;
 
+    #[Validate('required|string|min:3|max:255|unique:categories,name')]
     public $name;
+
+    #[Validate('required|string|min:3|max:255|unique:categories,slug')]
     public $slug;
+
+    #[Validate('required|string|min:10|max:255')]
     public $description;
     protected $listeners = ['delete'];
-    //  => 'confirmDelete'];
     public int $editedCategoryId = 0;
     public array $active = [];
     public bool $showModal = false;
@@ -63,9 +68,8 @@ class CategoriesList extends Component
     protected function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('categories', 'name')->ignore($this->editedCategoryId)],
-            'slug' => ['nullable', 'string', 'min:3', 'max:255', Rule::unique('categories', 'slug')->ignore($this->editedCategoryId)],
-            'description' => ['required', 'string'],
+            'name' => [Rule::unique('categories', 'name')->ignore($this->editedCategoryId)],
+            'slug' => [Rule::unique('categories', 'slug')->ignore($this->editedCategoryId)],
         ];
     }
 
@@ -76,8 +80,7 @@ class CategoriesList extends Component
 
     public function save()
     {
-        $this->validate();
-        $this->slug = Str::slug($this->name);
+        $validated = $this->validate();
 
         if ($this->editedCategoryId) {
             $category = Category::find($this->editedCategoryId);
@@ -86,14 +89,10 @@ class CategoriesList extends Component
                 'slug' => $this->slug,
                 'description' => $this->description,
             ]);
-            $this->resetValidation();
+            // $this->resetValidation();
             $this->reset('showModal', 'editedCategoryId');
         } else {
-            $category = Category::create([
-                'name' => $this->name,
-                'slug' => $this->slug,
-                'description' => $this->description,
-            ]);
+            $this->create($validated);
             $this->resetValidation();
             $this->reset('showModal', 'editedCategoryId');
         }
