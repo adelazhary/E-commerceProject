@@ -20,4 +20,9 @@ class category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('is_active', 1);
+    }
 }

@@ -14,13 +14,13 @@ class CategoriesList extends Component
     use WithPagination;
 
     #[Validate('required|string|min:3|max:255|unique:categories,name')]
-    public $name;
+    public string $name;
 
     #[Validate('required|string|min:3|max:255|unique:categories,slug')]
-    public $slug;
+    public string $slug;
 
     #[Validate('required|string|min:10|max:255')]
-    public $description;
+    public string $description;
     protected $listeners = ['delete'];
     public int $editedCategoryId = 0;
     public array $active = [];

@@ -1,6 +1,9 @@
+@import 'select2.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .toggle-checkbox:checked {
     @apply right-0 border-green-400;
 }

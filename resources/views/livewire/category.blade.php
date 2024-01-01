@@ -114,12 +114,12 @@
                         </svg>
                     </div>
                     <div class="mb-2 w-full">
-                        <label class="block text-sm font-medium text-gray-700" for="category.name">
+                        <label class="block text-sm font-medium text-gray-700" for="name">
                             Name
                         </label>
-                        <input wire:model="category.name" id="category.name"
+                        <input wire:model="name" id="name"
                             class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
-                        @error('category.name')
+                        @error('name')
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
