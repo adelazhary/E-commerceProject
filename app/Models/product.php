@@ -51,4 +51,9 @@ class product extends Model
     {
         return $this->belongsTo(country::class);
     }
+
+    public function orders(): belongsToMany
+    {
+        return $this->belongsToMany(Order::class);
+    }
 }

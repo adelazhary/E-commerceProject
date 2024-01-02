@@ -16,7 +16,11 @@
                             </div>
                         @endif
                     </div>
-
+                    @error('orderexist')
+                    <div class="p-3 mb-4 text-green-700 bg-green-200">
+                        {!! $message !!}
+                    </div>
+                @enderror
                     <div class="mb-4">
                         <div class="mb-4">
                             <a href="{{ route('products.create') }}"

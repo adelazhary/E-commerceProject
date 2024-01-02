@@ -187,4 +187,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'orders' => [
+        'taxes' => 21,
+    ],
 ];

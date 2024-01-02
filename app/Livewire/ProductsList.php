@@ -67,9 +67,18 @@ class ProductsList extends Component
     }
     public function deleteSelected(): void
     {
-        $products = product::whereIn('id', $this->selected)->get();
-
+        $products = Product::with('orders')->whereIn('id', $this->selected)->get();
+        foreach ($products as $product) {
+            if ($product->orders()->exists()) {
+                $this->addError("orderexist", "Product <span class='font-bold'>{$product->name}</span> cannot be deleted, it already has orders");
+                return;
+            }
+        }
         $products->each->delete();
+
+        // if ($products->orders()->exists()) {
+        //     $this->addError('orderexist', 'This product cannot be deleted, it already has orders');
+        //     return;
 
         $this->reset('selected');
     }
