@@ -7,6 +7,7 @@ use App\Models\Order;
 use Livewire\WithPagination;
 use Illuminate\Support\Carbon;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 
 class OrdersList extends Component
 {
@@ -26,8 +27,6 @@ class OrdersList extends Component
         'total' => ['', ''],
         'taxes' => ['', ''],
     ];
-
-    protected $listeners = ['delete', 'deleteSelected'];
 
     public function render(): View
     {
@@ -81,21 +80,8 @@ class OrdersList extends Component
         ]);
     }
 
-
-    public function deleteConfirm($method, $id = null)
-    {
-        $this->dispatch('swal:confirm', [
-            'type'  => 'warning',
-            'title' => 'Are you sure?',
-            'text'  => '',
-            'id'    => $id,
-            'method' => $method,
-        ]);
-    }
-
     public function delete($id): void
     {
-        dd($id  . 'delete');
         Order::findOrFail($id)->delete();
     }
 
