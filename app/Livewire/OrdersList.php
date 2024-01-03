@@ -84,7 +84,7 @@ class OrdersList extends Component
 
     public function deleteConfirm($method, $id = null)
     {
-        $this->dispatchBrowserEvent('swal:confirm', [
+        $this->dispatch('swal:confirm', [
             'type'  => 'warning',
             'title' => 'Are you sure?',
             'text'  => '',
@@ -95,6 +95,7 @@ class OrdersList extends Component
 
     public function delete($id): void
     {
+        dd($id  . 'delete');
         Order::findOrFail($id)->delete();
     }
 
