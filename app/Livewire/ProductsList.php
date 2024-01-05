@@ -80,7 +80,7 @@ class ProductsList extends Component
         //     $this->addError('orderexist', 'This product cannot be deleted, it already has orders');
         //     return;
 
-        $this->reset('selected');
+        // $this->reset('selected');
     }
     protected $queryString = [
         'sortColumn' => [

@@ -30,14 +30,12 @@ class ProductForm extends Component
     #[Validate('required')]
     public int $inventory_id;
     #[Validate()]
-    public  $category_id;
-
+    public $category_id;
     #[Validate('required')]
     public int $discount_id;
     public bool $editing = false;
     public array $categories = [];
     public array $listsForFields = [];
-    public $created_at;
     public function mount(): void
     {
         $this->initListsForFields();
@@ -49,7 +47,6 @@ class ProductForm extends Component
         $this->categories = [];
         $this->name = '';
         $this->discount_id = 0;
-        $this->created_at = '';
 
         if ($this->editing) {
 

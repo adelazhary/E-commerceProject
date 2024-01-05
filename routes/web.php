@@ -2,6 +2,8 @@
 
 use App\Livewire\CategoriesList;
 use App\Livewire\Category;
+use App\Livewire\Discounts;
+use App\Livewire\InventoryList;
 use App\Livewire\OrderForm;
 use App\Livewire\OrdersList;
 use App\Livewire\ProductForm;
@@ -41,6 +43,7 @@ route::group(['middleware' => ['auth']], function () {
 
     Route::get('products/create', ProductForm::class)->name('products.create');
     Route::get('products/{product}/edit', ProductForm::class)->name('products.edit');
-    // Route::get('categories/create', Category::class)->name('categories.create');
-    // Route::get('categories/{category}/edit', Category::class)->name('categories.edit');
+
+    Route::get('discounts', Discounts::class)->name('discounts.index');
+    route::get('inventories', InventoryList::class)->name('inventories.index');
 });
