@@ -60,7 +60,7 @@
                                         {{-- Inline Edit Start --}}
                                         <td
                                             class="@if ($editedCategoryId !== $category->id) hidden @endif px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <x-text-input wire:model.live="name" id="category.name"
+                                            <x-text-input wire:model.live="name" id="name"
                                                 class="py-2 pr-4 pl-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
                                             @error('name')
                                                 <span class="text-sm text-red-500">{{ $message }}</span>
@@ -68,7 +68,7 @@
                                         </td>
                                         <td
                                             class="@if ($editedCategoryId !== $category->id) hidden @endif px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <x-text-input wire:model.live="slug" id="category.slug"
+                                            <x-text-input wire:model.live="slug" id="slug"
                                                 class="py-2 pr-4 pl-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
                                             @error('slug')
                                                 <span class="text-sm text-red-500">{{ $message }}</span>
@@ -76,7 +76,7 @@
                                         </td>
                                         <td
                                             class="@if ($editedCategoryId !== $category->id) hidden @endif px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <x-text-input wire:model.live="description" id="category.description"
+                                            <x-text-input wire:model.live="description" id="description"
                                                 class="py-2 pr-4 pl-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
                                             @error('description')
                                                 <span class="text-sm text-red-500">{{ $message }}</span>
@@ -152,20 +152,20 @@
                         </svg>
                     </div>
                     <div class="mb-2 w-full">
-                        <label class="block text-sm font-medium text-gray-700" for="category.name">
+                        <label class="block text-sm font-medium text-gray-700" for="name">
                             Name
                         </label>
-                        <input wire:model.live="name" id="category.name"
+                        <input wire:model.live="name" id="name"
                             class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
                         @error('name')
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-2 w-full">
-                        <label class="block text-sm font-medium text-gray-700" for="category.description">
+                        <label class="block text-sm font-medium text-gray-700" for="description">
                             Description
                         </label>
-                        <textarea wire:model.live="description" id="category.description"
+                        <textarea wire:model.live="description" id="description"
                             class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400"></textarea>
                         @error('description')
                             <span class="text-sm text-red-500">{{ $message }}</span>

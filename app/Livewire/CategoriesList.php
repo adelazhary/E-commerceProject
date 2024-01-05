@@ -13,16 +13,14 @@ class CategoriesList extends Component
 {
     use WithPagination;
 
-    #[Validate('required|string|min:3|max:255|unique:categories,name')]
+    #[Validate('required|string|min:3|max:255')]
     public string $name;
-
-    #[Validate('required|string|min:3|max:255|unique:categories,slug')]
+    #[Validate('required|string|min:3|max:255')]
     public string $slug;
-
     #[Validate('required|string|min:10|max:255')]
     public string $description;
-    protected $listeners = ['delete'];
     public int $editedCategoryId = 0;
+    #[Validate('boolean')]
     public array $active = [];
     public bool $showModal = false;
 
@@ -56,6 +54,9 @@ class CategoriesList extends Component
         $this->slug = '';
         $this->description = '';
         $this->editedCategoryId = 0;
+        $this->active = [];
+        $this->showModal = false;
+        $this->resetPage();
     }
 
     public function toggleIsActive($categoryId)
@@ -68,8 +69,10 @@ class CategoriesList extends Component
     protected function rules(): array
     {
         return [
-            'name' => [Rule::unique('categories', 'name')->ignore($this->editedCategoryId)],
-            'slug' => [Rule::unique('categories', 'slug')->ignore($this->editedCategoryId)],
+            'name' => 'required|string|min:3|max:255|unique:categories,name,' . $this->editedCategoryId,
+            'slug' => 'required|string|min:3|max:255|unique:categories,slug,' . $this->editedCategoryId,
+            'description' => 'required|string|min:10|max:255',
+            'active.*' => 'boolean',
         ];
     }
 
@@ -77,29 +80,30 @@ class CategoriesList extends Component
     {
         $this->slug = Str::slug($this->name);
     }
-
     public function save()
     {
-        $validated = $this->validate();
-
-        if ($this->editedCategoryId) {
-            $category = Category::find($this->editedCategoryId);
+        if($this->editedCategoryId){
+            $category = Category::findOrFail($this->editedCategoryId);
             $category->update([
                 'name' => $this->name,
-                'slug' => $this->slug,
+                'slug' => Str::slug($this->name),
                 'description' => $this->description,
+                'is_active' => $this->active[$this->editedCategoryId] ?? '0',
             ]);
-            // $this->resetValidation();
             $this->reset('showModal', 'editedCategoryId');
-        } else {
-            $this->create($validated);
-            $this->resetValidation();
+        }else{
+            category::updateOrCreate([
+                'name' => $this->name,
+                'slug' => Str::slug($this->name),
+                'description' => $this->description,
+                'is_active' => $this->active[$this->editedCategoryId] ?? '0',
+            ]);
             $this->reset('showModal', 'editedCategoryId');
         }
     }
     public function delete($categoryId)
     {
-        $category = Category::find($categoryId);
+        $category = Category::findOrFail($categoryId);
         $category->delete();
     }
 

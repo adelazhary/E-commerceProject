@@ -2,6 +2,7 @@
 
 use App\Livewire\CategoriesList;
 use App\Livewire\Category;
+use App\Livewire\OrderForm;
 use App\Livewire\OrdersList;
 use App\Livewire\ProductForm;
 use App\Livewire\ProductsList;
@@ -33,7 +34,11 @@ require __DIR__.'/auth.php';
 route::group(['middleware' => ['auth']], function () {
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
+
     Route::get('orders', OrdersList::class)->name('orders.index');
+    Route::get('orders/create', OrderForm::class)->name('orders.create');
+    Route::get('orders/{order}', OrderForm::class)->name('orders.edit');
+
     Route::get('products/create', ProductForm::class)->name('products.create');
     Route::get('products/{product}/edit', ProductForm::class)->name('products.edit');
     // Route::get('categories/create', Category::class)->name('categories.create');
