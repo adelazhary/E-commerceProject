@@ -4,11 +4,9 @@
 <div>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Categories') }}
+            {{ __('Discounts') }}
         </h2>
     </x-slot>
-
-
 
     <section class="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
         <div class="px-4 mx-auto max-w-screen-2xl lg:px-12">
@@ -27,6 +25,7 @@
                     </div>
                     <div
                         class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
+                            <form action=""></form>
                         <button type="button"
                             class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
@@ -71,7 +70,6 @@
                                 <th scope="col" class="px-4 py-3">discription</th>
                                 <th scope="col" class="px-4 py-3">Active</th>
                                 <th scope="col" class="px-4 py-3">Discount Percent</th>
-                                <th scope="col" class="px-4 py-3">Sales/Month</th>
                                 <th scope="col" class="px-4 py-3">Last Update</th>
                             </tr>
                         </thead>
@@ -88,72 +86,38 @@
                                     </td>
                                     <th scope="row"
                                         class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
-                                            alt="iMac Front Image" class="w-auto h-8 mr-3">
-                                        Apple iMac 27&#34;
+                                        {{ $discount->name }}
                                     </th>
                                     <td class="px-4 py-2">
                                         <span
-                                            class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">Desktop
-                                            PC</span>
+                                            class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
+                                            {{ $discount->discription }}
+                                        </span>
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center">
-                                            <div class="inline-block w-4 h-4 mr-2 bg-red-700 rounded-full"></div>
-                                            95
+                                            <div
+                                                class="inline-block relative mr-2 w-10 align-middle transition duration-200 ease-in select-none">
+                                                {{-- <input wire:model.live="active"
+                                                    wire:click="toggleIsActive({{ $discount->id }})" type="checkbox"
+                                                    name="toggle" id="{{ $loop->index . $discount->id }}"
+                                                    class="block absolute w-6 h-6 bg-white rounded-full border-4 appearance-none cursor-pointer focus:outline-none toggle-checkbox" /> --}}
+                                                <input wire:model="active"
+                                                    wire:click="toggleIsActive({{ $discount->id }})" type="checkbox"
+                                                    name="toggle" id="active"
+                                                    class="block absolute w-6 h-6 bg-white rounded-full border-4 appearance-none cursor-pointer focus:outline-none toggle-checkbox" />
+                                                <label for="active"
+                                                    class="block overflow-hidden h-6 bg-gray-300 rounded-full cursor-pointer toggle-label"></label>
+                                            </div>
+
                                         </div>
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         1.47</td>
+
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        0.47</td>
-                                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center">
-                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor"
-                                                viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor"
-                                                viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                fill="currentColor" viewbox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                fill="currentColor" viewbox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                fill="currentColor" viewbox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                            <span class="ml-1 text-gray-500 dark:text-gray-400">5.0</span>
-                                        </div>
+                                        {{ $discount->created_at->diffForHumans(); }}
                                     </td>
-                                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"
-                                                fill="currentColor" class="w-5 h-5 mr-2 text-gray-400"
-                                                aria-hidden="true">
-                                                <path
-                                                    d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-                                            </svg>
-                                            1.6M
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-2">$3.2M</td>
-                                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Just now</td>
                                 </tr>
                             @endforeach
                         </tbody>

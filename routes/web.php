@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DiscountController;
 use App\Livewire\CategoriesList;
 use App\Livewire\Discounts;
 use App\Livewire\InventoryList;
@@ -42,6 +43,10 @@ route::group(['middleware' => ['auth']], function () {
     Route::get('products/{product}/edit', ProductForm::class)->name('products.edit');
 
     Route::get('discounts', Discounts::class)->name('discounts.index');
+    Route::controller(DiscountController::class)->group(function () {
+        Route::get('/create', 'create');
+        Route::post('/orders', 'store');
+    });
     route::get('inventories', InventoryList::class)->name('inventories.index');
 
 });
