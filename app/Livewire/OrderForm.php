@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\Title;
 use Livewire\Volt\Compilers\Mount;
 
 class OrderForm extends Component
@@ -51,7 +52,7 @@ class OrderForm extends Component
             'orderProducts' => ['array']
         ];
     }
-
+    #[Title('Order Form')]
     public function render()
     {
         $this->order->subtotal = 0;

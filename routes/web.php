@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\CategoriesList;
-use App\Livewire\Category;
 use App\Livewire\Discounts;
 use App\Livewire\InventoryList;
 use App\Livewire\OrderForm;
@@ -21,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
-
-Route::view('dashboard', 'dashboard')
+Route::view('/', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -46,4 +43,5 @@ route::group(['middleware' => ['auth']], function () {
 
     Route::get('discounts', Discounts::class)->name('discounts.index');
     route::get('inventories', InventoryList::class)->name('inventories.index');
+
 });

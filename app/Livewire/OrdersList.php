@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Carbon;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 
 class OrdersList extends Component
 {
@@ -27,7 +28,7 @@ class OrdersList extends Component
         'total' => ['', ''],
         'taxes' => ['', ''],
     ];
-
+    #[Title('Orders List')]
     public function render(): View
     {
         $orders = Order::query()

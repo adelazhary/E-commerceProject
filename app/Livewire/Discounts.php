@@ -2,6 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\discount;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class Discounts extends Component
@@ -19,8 +22,27 @@ class Discounts extends Component
         $this->discription = 'This is a discount';
         $this->modified_at = null;
     }
+
+    #[Title('Discounts')]
     public function render()
     {
-        return view('livewire.discounts');
+        $discounts = discount::all();
+        return view('livewire.discounts', compact('discounts'));
+    }
+    public function save()
+    {
+        $this->validate([
+            'name' => 'required',
+            'discount_percent' => 'required|numeric',
+            'active' => 'required',
+            'discription' => 'required',
+        ]);
+        discount::create([
+            'name' => $this->name,
+            'discount_percent' => $this->discount_percent,
+            'active' => $this->active,
+            'discription' => $this->discription,
+        ]);
+        $this->reset();
     }
 }

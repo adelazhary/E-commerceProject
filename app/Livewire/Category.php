@@ -7,7 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Validation\Rule as ValidationRule;
 use Illuminate\Support\Str;
-
+use Livewire\Attributes\Title;
 
 class Category extends Component
 {
@@ -30,7 +30,7 @@ class Category extends Component
 
         $this->category = new ModelsCategory();
     }
-
+    #[Title('Product Form')]
     public function render()
     {
         $categories = ModelsCategory::paginate(10);

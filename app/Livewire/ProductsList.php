@@ -6,10 +6,9 @@ use App\Models\category;
 use App\Models\Country;
 use App\Models\product;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
-
 class ProductsList extends Component
 {
     use WithPagination;
@@ -90,12 +89,15 @@ class ProductsList extends Component
             'except' => 'asc',
         ],
     ];
+
+    #[Title('Products List')]
     public function render()
     {
         $products = Product::query()
             ->select(['products.*', 'countries.id as countryId', 'countries.name as countryName',])
             ->join('countries', 'countries.id', '=', 'products.country_id')
             ->with('categories');
+
         foreach ($this->searchColumns as $column => $value) {
             if (!empty($value)) {
                 $products->when($column == 'price', function ($products) use ($value) {
