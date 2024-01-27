@@ -31,6 +31,7 @@ class OrdersList extends Component
     #[Title('Orders List')]
     public function render(): View
     {
+
         $orders = Order::query()
             ->select(['orders.*', 'users.name as username'])
             ->join('users', 'users.id', '=', 'orders.user_id')

@@ -4,6 +4,7 @@
             {{ $editing ? 'Edit ' . $product->name : 'Create Product' }}
         </h2>
     </x-slot>
+
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
@@ -31,46 +32,26 @@
                         </div>
 
                         <div class="mt-4">
-                            <x-input-label for="price" :value="__('Price')" />
+                            <x-input-label for="discount" :value="__('Discount Percentage')" />
 
-                            <x-text-input wire:model.defer="price" type="number" min="0" step="0.01"
-                                class="block mt-1 w-full" id="price" />
-                            <x-input-error :messages="$errors->get('price')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label class="mb-1" for="categories" :value="__('Categories')" />
-
-                            <x-select2 class="mt-1" id="categories" name="categories" :options="$this->listsForFields['categories']"
-                                wire:model="categories" multiple />
-                            <x-input-error :messages="$errors->get('categories')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label class="mb-1" for="country" :value="__('Country')" />
-
-                            <x-select2 class="mt-1" id="country" name="country" :options="$this->listsForFields['countries']"
-                                wire:model="country_id" />
-                            <x-input-error :messages="$errors->get('country_id')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label class="mb-1" for="Inventory" :value="__('Inventory')" />
-
-                            <x-select2 class="mt-1" id="Inventory" name="Inventory" :options="$this->listsForFields['inventories']"
-                                wire:model="inventory_id" />
-                            <x-input-error :messages="$errors->get('inventory_id')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label class="mb-1" for="discount" :value="__('discount')" />
-
-                            <x-select2 class="mt-1" id="discount" name="discount" :options="$this->listsForFields['discounts']"
-                                wire:model="discount_id" multiple />
+                            <x-text-input wire:model.live.defer="discount" id="discount" class="block mt-1 w-full"
+                                type="text" />
                             <x-input-error :messages="$errors->get('discount')" class="mt-2" />
                         </div>
-
-
+                        <div>
+                            Discount start from
+                            <input x-data x-init="new Pikaday({ field: $el, format: 'MM/DD/YYYY' })"
+                                wire:model.lazy="searchColumns.order_date.0" type="text"
+                                placeholder="MM/DD/YYYY"
+                                class="mr-2 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                        </div>
+                        <div>
+                            Dicount End
+                            <input x-data x-init="new Pikaday({ field: $el, format: 'MM/DD/YYYY' })"
+                                wire:model.lazy="searchColumns.order_date.1" type="text"
+                                placeholder="MM/DD/YYYY"
+                                class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                        </div>
                         <div class="mt-4">
                             <x-primary-button type="submit">
                                 Save
@@ -84,6 +65,9 @@
     </div>
 </div>
 @push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
     <script src="https://cdn.ckeditor.com/ckeditor5/31.1.0/classic/ckeditor.js"></script>
     <script>
         var ready = (callback) => {

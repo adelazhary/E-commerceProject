@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DiscountController;
 use App\Livewire\CategoriesList;
+use App\Livewire\DiscountForm;
 use App\Livewire\Discounts;
 use App\Livewire\InventoryList;
 use App\Livewire\OrderForm;
@@ -30,7 +31,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 // routes/web.php
 Route::get('/register', 'RegistrationController@showRegistrationForm')->name('register');
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 route::group(['middleware' => ['auth']], function () {
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
@@ -43,10 +44,6 @@ route::group(['middleware' => ['auth']], function () {
     Route::get('products/{product}/edit', ProductForm::class)->name('products.edit');
 
     Route::get('discounts', Discounts::class)->name('discounts.index');
-    Route::controller(DiscountController::class)->group(function () {
-        Route::get('/create', 'create');
-        Route::post('/orders', 'store');
-    });
+    Route::get('discount/create', DiscountForm::class)->name('discounts.create');
     route::get('inventories', InventoryList::class)->name('inventories.index');
-
 });

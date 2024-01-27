@@ -107,10 +107,7 @@ class ProductForm extends Component
             'categories' => $this->categories,
             'discount_id' => 1,
         ]);
-
-        $this->categories()->sync($this->categories);
-
-        $this->reset('product');
+        session()->flash('message', 'Product successfully created.');
         return redirect()->route('products.index');
     }
 }

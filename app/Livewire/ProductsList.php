@@ -13,14 +13,17 @@ class ProductsList extends Component
 {
     use WithPagination;
     public array $categories = [], $countries = [];
-    public string $sortColumn, $sortDirection;
+    public string $sortColumn;
+    public string $sortDirection;
     public array $selected = [];
     public function mount(): void
     {
         $this->categories = category::pluck('name', 'id')->toArray();
         $this->countries = Country::pluck('name', 'id')->toArray();
         $this->sortColumn = 'products.name';
-        $this->sortDirection = 'asc';
+        $this->sortDirection = 'desc';
+        $this->searchColumns['price'] = ['', ''];
+        $this->searchColumns['category_id'] = 0;
     }
     public array $searchColumns = [
         'name' => '',
@@ -74,12 +77,6 @@ class ProductsList extends Component
             }
         }
         $products->each->delete();
-
-        // if ($products->orders()->exists()) {
-        //     $this->addError('orderexist', 'This product cannot be deleted, it already has orders');
-        //     return;
-
-        // $this->reset('selected');
     }
     protected $queryString = [
         'sortColumn' => [
