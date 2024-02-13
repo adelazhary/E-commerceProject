@@ -57,7 +57,7 @@
                                     <th wire:click="sortByColumn('countryName')" class="px-6 py-3 text-left bg-gray-50">
                                         <span
                                             class="text-xs font-medium tracking-wider leading-4 text-gray-500 uppercase">Country</span>
-                                        @if ($sortColumn == 'countryName')
+                                        @if ($sortColumn == 'products.countryName')
                                             @include('svg.sort-' . $sortDirection)
                                         @else
                                             @include('svg.sort')

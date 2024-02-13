@@ -21,7 +21,7 @@ class ProductsList extends Component
         $this->categories = category::pluck('name', 'id')->toArray();
         $this->countries = Country::pluck('name', 'id')->toArray();
         $this->sortColumn = 'products.name';
-        $this->sortDirection = 'desc';
+        $this->sortDirection = 'asc';
         $this->searchColumns['price'] = ['', ''];
         $this->searchColumns['category_id'] = 0;
     }
@@ -56,12 +56,14 @@ class ProductsList extends Component
     }
     public function sortByColumn($column): void
     {
-        if ($this->sortColumn == $column) {
-            $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
+
+        if ($column === 'products.countryName') {
+            $this->sortColumn = 'countries.name'; // Update sortColumn to the correct country name column
         } else {
-            $this->reset('sortDirection');
             $this->sortColumn = $column;
         }
+
+        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
     }
     public function getSelectedCountProperty(): int
     {
