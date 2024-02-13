@@ -17,10 +17,10 @@
                         @endif
                     </div>
                     @error('orderexist')
-                    <div class="p-3 mb-4 text-green-700 bg-green-200">
-                        {!! $message !!}
-                    </div>
-                @enderror
+                        <div class="p-3 mb-4 text-green-700 bg-green-200">
+                            {!! $message !!}
+                        </div>
+                    @enderror
                     <div class="mb-4">
                         <div class="mb-4">
                             <a href="{{ route('products.create') }}"
@@ -32,6 +32,10 @@
                             class="px-4 py-2 mr-5 text-xs text-red-500 uppercase bg-red-200 rounded-md border border-transparent hover:text-red-700 hover:bg-red-300 disabled:opacity-50 disabled:cursor-not-allowed">
                             Delete Selected
                         </button>
+
+                        <x-primary-button wire:click="export('csv')">CSV</x-primary-button>
+                        <x-primary-button wire:click="export('xlsx')">XLSX</x-primary-button>
+                        <x-primary-button wire:click="export('pdf')">PDF</x-primary-button>
                     </div>
 
                     <div class="overflow-hidden overflow-x-auto mb-4 min-w-full align-middle sm:rounded-md">
@@ -72,8 +76,7 @@
                                             @include('svg.sort')
                                         @endif
                                     </th>
-                                    <th wire:click="sortByColumn('created_at')"
-                                        class="px-6 py-3 text-left bg-gray-50">
+                                    <th wire:click="sortByColumn('created_at')" class="px-6 py-3 text-left bg-gray-50">
                                         <span
                                             class="text-xs font-medium tracking-wider leading-4 text-gray-500 uppercase">Created
                                             at</span>
@@ -147,9 +150,10 @@
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                                             ${{ number_format($product->price / 100, 2) }}
                                         </td>
-                                        <td>{{ $product->created_at->diffForHumans(); }}</td>
+                                        <td>{{ $product->created_at->diffForHumans() }}</td>
                                         <td>
-                                            <a href="{{ route('products.edit', $product) }}" class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700">
+                                            <a href="{{ route('products.edit', $product) }}"
+                                                class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700">
                                                 Edit
                                             </a>
                                             <button wire:click="deleteProduct({{ $product->id }})"

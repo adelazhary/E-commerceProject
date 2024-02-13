@@ -2,13 +2,18 @@
 
 namespace App\Livewire;
 
+use App\Exports\ProductsExport;
 use App\Models\category;
 use App\Models\Country;
 use App\Models\product;
+use Illuminate\Http\Response;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ProductsList extends Component
 {
     use WithPagination;
@@ -116,5 +121,11 @@ class ProductsList extends Component
         return view('livewire.products-list', [
             'products' => $products->paginate(10),
         ]);
+    }
+    public function export($format): BinaryFileResponse
+    {
+        abort_if(! in_array($format, ['csv', 'xlsx', 'pdf']), Response::HTTP_NOT_FOUND);
+
+        return Excel::download(new ProductsExport($this->selected), 'products.' . $format);
     }
 }
