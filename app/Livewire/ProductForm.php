@@ -7,13 +7,17 @@ use App\Models\Country;
 use App\Models\discount;
 use App\Models\inventory;
 use App\Models\product;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Livewire\WithFileUploads as LivewireWithFileUploads;
 
 class ProductForm extends Component
 {
-    public $title ;
+    use LivewireWithFileUploads;
+    public $title;
     #[Validate('required|string|min:3|max:255|unique:products,name')]
     public string $name;
 
@@ -34,6 +38,7 @@ class ProductForm extends Component
     public int $discount_id;
     public bool $editing = false;
     public array $categories = [];
+    public string $image;
     public array $listsForFields = [];
     public function mount(): void
     {
@@ -46,7 +51,7 @@ class ProductForm extends Component
         $this->categories = [];
         $this->name = '';
         $this->discount_id = 0;
-
+        $this->image = '';
         if ($this->editing) {
             $this->category_id = $this->category_id ? $this->category_id : null;
             $this->country_id = $this->country_id ? $this->country_id : null;
@@ -89,25 +94,31 @@ class ProductForm extends Component
     }
     public function save()
     {
-        product::create([
-            $this->validate([
+        try {
+            $validatedData = $this->validate([
                 'name' => 'required|string|min:3|max:255|unique:products,name',
                 'description' => 'required|string|min:3|max:255',
                 'price' => 'required|numeric',
                 'country_id' => 'required|integer|exists:countries,id|nullable',
                 'categories' => 'required|array',
                 'discount_id' => 'required|integer|exists:discounts,id|nullable',
-                'inventory_id' => 'required|integer|exists:inventories,id|nullable'
-            ]),
-            'inventory_id' => 1,
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
-            'country_id' => $this->country_id,
-            'categories' => $this->categories,
-            'discount_id' => 1,
-        ]);
-        session()->flash('message', 'Product successfully created.');
-        return redirect()->route('products.index');
+                'inventory_id' => 'required|integer|exists:inventories,id|nullable',
+            ]);
+
+            if ($this->image) {
+                $this->image->store('products');
+                // $validatedData['image'] = $this->image->store('products', 'public');
+            }
+
+            $validatedData['inventory_id'] = 1;
+            $validatedData['discount_id'] = 1;
+
+            product::create($validatedData);
+            session()->flash('message', 'Product successfully created.');
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to create product: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 }

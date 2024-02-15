@@ -9,7 +9,7 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <form wire:submit.prevent="save">
+                    <form wire:submit.prevent="save" enctype="multipart/form-data">
                         @csrf
 
                         <div>
@@ -18,6 +18,14 @@
                             <x-text-input wire:model.live.defer="name" id="name" class="block mt-1 w-full"
                                 type="text" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
+
+                        <div class="mt-4">
+                            <x-input-label for="image" :value="__('Image')" />
+                            <button type="submit">Upload Image</button>
+                            <input wire:model="image" type="file"
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                            <x-input-error :messages="$errors->get('image')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
