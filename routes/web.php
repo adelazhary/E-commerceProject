@@ -35,7 +35,6 @@ require __DIR__ . '/auth.php';
 route::group(['middleware' => ['auth']], function () {
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
-
     Route::get('orders', OrdersList::class)->name('orders.index');
     Route::get('orders/create', OrderForm::class)->name('orders.create');
     Route::get('orders/{order}', OrderForm::class)->name('orders.edit');

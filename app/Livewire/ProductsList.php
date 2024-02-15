@@ -44,13 +44,15 @@ class ProductsList extends Component
 
     public function deleteProduct($productId): void
     {
+        // dd($productId);
         if (is_array($productId)) {
             $this->selected = $productId;
         } else {
             $this->selected = [$productId];
         }
-
+        // dd($this->selected);
         $products = product::whereIn('id', $this->selected)->get();
+        // dd($products);
         if ($products == null || $products->isEmpty()) {
             session()->flash('message', 'There are No Selected Product found!');
         } else {
