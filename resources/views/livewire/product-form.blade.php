@@ -23,7 +23,7 @@
                         <div class="mt-4">
                             <x-input-label for="image" :value="__('Image')" />
                             <button type="submit">Upload Image</button>
-                            <input wire:model="image" type="file"
+                            <input wire:model="image" type="file" id="image" name="image"
                                 class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                             <x-input-error :messages="$errors->get('image')" class="mt-2" />
                         </div>
@@ -60,14 +60,6 @@
                             <x-select2 class="mt-1" id="country" name="country" :options="$this->listsForFields['countries']"
                                 wire:model="country_id" />
                             <x-input-error :messages="$errors->get('country_id')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label class="mb-1" for="Inventory" :value="__('Inventory')" />
-
-                            <x-select2 class="mt-1" id="Inventory" name="Inventory" :options="$this->listsForFields['inventories']"
-                                wire:model="inventory_id" />
-                            <x-input-error :messages="$errors->get('inventory_id')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class product extends Model
 {
@@ -19,7 +20,6 @@ class product extends Model
         'modified_at',
         'price',
         'discount_id',
-        'inventory_id',
         'is_available',
         'is_in_stock',
         'amount_in_stock',
@@ -56,4 +56,9 @@ class product extends Model
     {
         return $this->belongsToMany(Order::class);
     }
+    public function discount(): BelongsTo
+    {
+        return $this->belongsTo(discount::class);
+    }
+
 }
