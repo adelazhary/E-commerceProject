@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('discount_percent');
+            $table->string('discount_percent')->nullable();
             $table->text('discription');
             $table->date('modified_at');
             $table->boolean('active');

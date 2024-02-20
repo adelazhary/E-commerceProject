@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('is_available')->default(false);
             $table->boolean('is_in_stock')->default(false);
             $table->integer('amount_in_stock')->default(0);
-            $table->date('modified_at')->nullable();
+            $table->date('modified_at')->useCurrent();
             $table->timestamps();
         });
     }

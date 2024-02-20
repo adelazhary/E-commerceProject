@@ -35,9 +35,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(product $product)
+    public function show($product)
     {
-        //
+        if (is_numeric($product)) {
+            $product = product::findOrFail($product);
+        } else {
+            $product = product::where('name', $product)->first();
+        }
+        return view('products.show', compact('product'));
     }
 
     /**

@@ -7,7 +7,6 @@ use App\Models\category;
 use App\Models\Country;
 use App\Models\product;
 use Illuminate\Http\Response;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
