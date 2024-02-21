@@ -125,7 +125,7 @@ class ProductsList extends Component
     }
     public function export($format): BinaryFileResponse
     {
-        abort_if(! in_array($format, ['csv', 'xlsx', 'pdf']), Response::HTTP_NOT_FOUND);
+        abort_if(!in_array($format, ['csv', 'xlsx', 'pdf']), Response::HTTP_NOT_FOUND);
 
         return Excel::download(new ProductsExport($this->selected), 'products.' . $format);
     }

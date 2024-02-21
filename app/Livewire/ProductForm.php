@@ -6,6 +6,7 @@ use App\Models\category;
 use App\Models\Country;
 use App\Models\discount;
 use App\Models\product;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -146,4 +147,27 @@ class ProductForm extends Component
             Log::error($e);
         }
     }
+    public function updated($fields)
+    {
+        $this->validateOnly($fields,[
+            'image' => 'required',
+        ]);
+    }
+
+    public function uploadImage()
+    {
+        $this->validate([
+            'image' => 'required',
+        ]);
+
+        // $image = new product();
+        // $imageName = Carbon::now()->timestamp. '.' . $this->image->extension();
+        // $this->image->storeAs('image_uploads', $imageName);
+        // $image->image = $imageName;
+        // $image->save();
+        // session()->flash('message', 'Image has been uploaded successfully');
+        // $this->image = '';
+
+    }
+
 }

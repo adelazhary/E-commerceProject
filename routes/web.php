@@ -32,7 +32,7 @@ Route::view('profile', 'profile')
 // routes/web.php
 Route::get('/register', 'RegistrationController@showRegistrationForm')->name('register');
 require __DIR__ . '/auth.php';
-route::group(['middleware' => ['auth']], function () {
+route::group(['middleware' => ['auth','throttle:rate_limit,10']], function () {
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
 
