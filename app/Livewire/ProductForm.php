@@ -17,22 +17,22 @@ class ProductForm extends Component
 {
     use WithFileUploads;
     public $title;
-    #[Validate('required|string|min:3|max:255|unique:products,name')]
+    // #[Validate('required|string|min:3|max:255|unique:products,name')]
     public string $name;
 
-    #[Validate('required|string|min:3|max:255')]
+    // #[Validate('required|string|min:3|max:255')]
     public string $description;
 
-    #[Validate('required|numeric')]
+    // #[Validate('required|numeric')]
     public int $price;
 
-    #[Validate('integer|exists:countries,id|nullable|required')]
+    // #[Validate('integer|exists:countries,id|nullable|required')]
     public int $country_id;
     #[Validate()]
     public $category_id;
-    #[Validate('boolean|default:false')]
+    // #[Validate('boolean|default:false')]
     public $is_available, $is_in_stock, $amount_in_stock, $modified_at;
-    #[Validate('required')]
+    // #[Validate('required')]
     public int $discount_id;
     public bool $editing = false;
     public array $categories = [];
@@ -108,7 +108,9 @@ class ProductForm extends Component
     public function save()
     {
         try {
-
+            dd($this->is_available);
+            $this->validate();
+            dd('here');
             $product = product::updateOrCreate(['id' => $this->id], [
                 'name' => $this->name,
                 'description' => $this->description,
@@ -122,15 +124,7 @@ class ProductForm extends Component
                 'modified_at' => now(),
                 'image' => 'products/1.jpg'
             ]);
-            dd($product);
 
-            $product->name = $this->name;
-            $product->description = strip_tags($this->description);
-            $product->price = $this->price;
-            $product->country_id = $this->country_id;
-            $product->discount_id = $this->discount_id;
-
-            $product->save();
             $product->categories()->attach($this->categories);
             dd($product);
             // Save product
@@ -152,22 +146,6 @@ class ProductForm extends Component
         $this->validateOnly($fields,[
             'image' => 'required',
         ]);
-    }
-
-    public function uploadImage()
-    {
-        $this->validate([
-            'image' => 'required',
-        ]);
-
-        // $image = new product();
-        // $imageName = Carbon::now()->timestamp. '.' . $this->image->extension();
-        // $this->image->storeAs('image_uploads', $imageName);
-        // $image->image = $imageName;
-        // $image->save();
-        // session()->flash('message', 'Image has been uploaded successfully');
-        // $this->image = '';
-
     }
 
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class product extends Model
 {
@@ -61,4 +61,12 @@ class product extends Model
         return $this->belongsTo(discount::class);
     }
 
+    public function getDescriptionAttribute($value)
+    {
+        return ucwords($value);
+    }
+    public function getExcerptAttribute()
+    {
+        return Str::limit($this->description, 200);
+    }
 }

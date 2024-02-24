@@ -20,8 +20,8 @@ class ProductDetails extends Component
         if (!$this->product) {
             abort(404);
         }
-        $this->image = Storage::get('DefaultProductImage.jpg');
-        // $this->image = $this->product->image ?? Storage::disk('local')->url('app/DefaultProductImage.jpg');
+
+        $this->image = Storage::get(storage_path('app') . 'DefaultProductImage.jpg');
         // $this->image = $this->product->image ?? Storage::disk('local')->url('app/DefaultProductImage.jpg');
     }
 

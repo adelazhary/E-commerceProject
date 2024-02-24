@@ -4,11 +4,14 @@ use App\Http\Controllers\ProductController;
 use App\Livewire\CategoriesList;
 use App\Livewire\DiscountForm;
 use App\Livewire\Discounts;
+use App\Livewire\Image;
+use App\Livewire\ImageUplaod;
 use App\Livewire\OrderForm;
 use App\Livewire\OrdersList;
 use App\Livewire\ProductDetails;
 use App\Livewire\ProductForm;
 use App\Livewire\ProductsList;
+use App\Livewire\UploadImage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,4 +51,6 @@ route::group(['middleware' => ['auth','throttle:rate_limit,10']], function () {
     Route::get('discounts', Discounts::class)->name('discounts.index');
     Route::get('discount/create', DiscountForm::class)->name('discounts.create');
 
+    Route::get('images', Image::class)->name('images.index');
+    Route::get('cart/add')->name('cart.add');
 });

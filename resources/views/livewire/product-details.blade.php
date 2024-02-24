@@ -14,18 +14,30 @@
             <div class="flex items-center mt-4">
                 <span class="text-base font-semibold text-green-500">{{ $product->price }}</span>
                 <span class="text-sm font-semibold text-gray-500 line-through ml-2">{{ $product->old_price }}</span>
-                <span class="text-sm font-semibold text-green-500 ml-2">{{ $product->discount }}</span>
-                <span class="text-sm font-semibold text-gray-500 ml-2">{{ $product->discount_type }}</span>
+                <span class="text-sm font-semibold text-green-500 ml-2">{{ $product->discount->discount_percent . ' OFF' }}</span>
+                <span class="text-sm font-semibold text-green-500 ml-2">{{ $product->discount->discount_amount }}</span>
             </div>
             <div class="flex items-center justify-between mt-4">
                 <div class="flex items-center">
                     <button
-                        class="px-3 py-2 rounded-md bg-gray-200 text-gray-700 text-base font-semibold focus:outline-none">-</button>
+                        class="px-3 py-2 rounded-md bg-gray-200 text-gray-700 text-base font-semibold focus:outline-none"> - </button>
                     <span class="px-3 py-2 rounded-md bg-gray-200 text-gray-700 text-base font-semibold">1</span>
                     <button
                         class="px-3 py-2 rounded-md bg-gray-200 text-gray-700 text-base font-semibold focus:outline-none">+</button>
                 </div>
-
+                <div class="flex items-center">
+                    <button
+                        class="px-3 py-2 rounded-md bg-gray-200 text-gray-700 text-base font-semibold focus:outline-none"> <i
+                            class="fas fa-heart"></i> </button>
+                    <button
+                        class="px-3 py-2 rounded-md bg-gray-200 text-gray-700 text-base font-semibold focus:outline-none"> <i
+                            class="fas fa-share"></i> </button>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button
+                    class="px-3 py-2 rounded-md bg-gray-800 text-white text-base font-semibold hover:bg-gray-700 focus:outline-none">Buy
+                    Now</button>
                 <button
                     class="ml-4 px-3 py-2 rounded-md bg-green-500 text-white text-base font-semibold hover:bg-green-700 focus:outline-none">Add
                     to Cart</button>
