@@ -33,24 +33,34 @@ class product extends Model
             set: fn ($value) => $value * 100,
         );
     }
+    protected $casts = [
+        'modified_at' => 'datetime',
+        'price' => 'integer',
+        'is_available' => 'boolean',
+        'is_in_stock' => 'boolean',
+    ];
+    protected $appends = ['excerpt'];
+    protected $with = ['country', 'categories', 'discount'];
+    protected $dates = ['modified_at'];
+    protected $hidden = ['pivot'];
+    protected $touches = ['categories'];
+    // protected $dispatchesEvents = [
+    //     'created' => \App\Events\ProductCreated::class,
+    //     'updated' => \App\Events\ProductUpdated::class,
+    //     'deleted' => \App\Events\ProductDeleted::class,
+    // ];
     // attribute
-    public function getImageAttribute($value)
-    {
-        return $value ? asset('storage/' . $value) : null;
-    }
-    // mutator
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = $value->store('products', 'public');
-    }
 
     public function setModifiedAtAttribute($value)
     {
         $this->attributes['modified_at'] = $value ? $value : now();
     }
-    public function getModifiedAtAttribute($value)
-    {
-        return $value ? $value : now();
+    protected function description(): Attribute{
+        return Attribute::make(
+            get: fn($value) => strip_tags($value),
+            set: fn($value) => strip_tags($value),
+
+        );
     }
     /**
      * The categories that belong to the product

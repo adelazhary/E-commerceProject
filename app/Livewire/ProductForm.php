@@ -32,7 +32,7 @@ class ProductForm extends Component
     public bool $editing = false;
     public array $listsForFields = [];
     public $image;
-
+    public ?Product $product;
     protected $rules = [
         'name' => 'required|string|min:3|max:255|unique:products,name',
         'description' => 'required|string|min:3|max:255',
@@ -43,8 +43,9 @@ class ProductForm extends Component
         'image' => 'nullable|image|max:1024|mimes:png,jpg,jpeg,gif,svg',
     ];
 
-    public function mount(): void
+    public function mount(Product $product = null ): void
     {
+        $this->id = $product->id ?? null;
         $this->initListsForFields();
         $this->editing = isset($this->id);
         $this->fill([
@@ -78,7 +79,7 @@ class ProductForm extends Component
     {
         $this->validate();
 
-        $product = $this->editing ? Product::find($this->id) : new Product();
+        $product = $this->editing ? Product::findOrFail($this->id) : new Product();
         $product->fill([
             'name' => $this->name,
             'description' => $this->description,
