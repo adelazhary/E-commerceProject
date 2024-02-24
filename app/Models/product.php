@@ -33,6 +33,25 @@ class product extends Model
             set: fn ($value) => $value * 100,
         );
     }
+    // attribute
+    public function getImageAttribute($value)
+    {
+        return $value ? asset('storage/' . $value) : null;
+    }
+    // mutator
+    public function setImageAttribute($value)
+    {
+        $this->attributes['image'] = $value->store('products', 'public');
+    }
+
+    public function setModifiedAtAttribute($value)
+    {
+        $this->attributes['modified_at'] = $value ? $value : now();
+    }
+    public function getModifiedAtAttribute($value)
+    {
+        return $value ? $value : now();
+    }
     /**
      * The categories that belong to the product
      *

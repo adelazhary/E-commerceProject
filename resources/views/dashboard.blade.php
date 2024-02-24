@@ -19,7 +19,7 @@
             @php
                 $products = \App\Models\Product::all();
             @endphp
-            @foreach ($products as $product)
+                @foreach ($products as $product)
                 @include('components.product-card', ['product' => $product])
             @endforeach
         </div>
