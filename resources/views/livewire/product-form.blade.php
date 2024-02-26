@@ -16,7 +16,7 @@
                             <x-input-label for="name" :value="__('Name')" />
 
                             <x-text-input wire:model.live.defer="name" id="name" class="block mt-1 w-full"
-                                type="text" value="{{ if }}"/>
+                                type="text" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                         <div class="mt-4">
@@ -26,10 +26,7 @@
                             <x-input-error :messages="$errors->get('image')" class="mt-2" />
                         </div>
                         @if ($image)
-                        <div wire:loading>
-                            Saving post...
-                        </div>
-                            <div class="mt-4">
+                        <div wire:loading wire:target="photo">Uploading...</div>                            <div class="mt-4">
                                 <img src="{{ $image->temporaryUrl() }}" alt="image" class="w-20 h-20">
                             </div>
                         @endif
