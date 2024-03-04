@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,10 +22,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('login', function ($request) {
-            return RateLimiter::perMinute(5)->by($request->ip());
+            return Limit::perMinute(5)->by($request->ip());
         });
-        RateLimiter::for('update-product', function ($request) {
-            return RateLimiter::perMinute(5)->by($request->session()->get('login.id'));
+        RateLimiter::for('create-product', function ($request) {
+            return Limit::perMinute(5)->response(function () {
+                return response()->json(['message' => 'Too many requests'], 429);
+            });
+        });
+        RateLimiter::for('delete-product', function ($request) {
+            return Limit::perMinute(5)->response(function () {
+                return response('Too many requests', 429)->header('Content-Type', 'text/plain');
+            });
         });
     }
 }
