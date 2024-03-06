@@ -9,6 +9,18 @@
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    @if ($errors->any())
+                        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative"
+                            role="alert">
+                            <strong class="font-bold">Whoops! Looks like your form has a case of the wiggles!</strong>
+                            <ul class="list-disc pl-5 mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <p class="mt-2 text-right text-sm">Try smoothing things out and submit again. </p>
+                        </div>
+                    @endif
 
                     <form wire:submit.prevent="save">
                         @csrf

@@ -125,10 +125,10 @@ class OrderForm extends Component
 
     public function saveOrderProduct(int $index): void
     {
-        // $this->validate([
-        //     'orderProducts.' . $index . '.product_id' => ['required', 'integer', 'exists:products,id'],
-        //     'orderProducts.' . $index . '.quantity' => ['required', 'integer', 'min:1'],
-        // ]);
+        $this->validate([
+            'orderProducts.' . $index . '.product_id' => ['required', 'integer', 'exists:products,id'],
+            'orderProducts.' . $index . '.quantity' => ['required', 'integer', 'min:1'],
+        ]);
 
         // Get product details from allProducts
         $product = $this->allProducts->firstWhere('id', $this->orderProducts[$index]['product_id']);
@@ -146,9 +146,6 @@ class OrderForm extends Component
 
     public function saveProduct($index): void
     {
-        /* The commented out line `// ->validate([` is a method call to validate the data before
-        saving it. In Laravel Livewire, the `validate()` method is used to validate the incoming
-        data based on the defined validation rules in the `rules()` method of the component. */
 
         $this->resetErrorBag();
         $product = $this->allProducts->find($this->orderProducts[$index]['product_id']);
