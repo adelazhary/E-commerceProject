@@ -2,79 +2,104 @@
 
 namespace App\Livewire;
 
-use App\Models\Category;
+use App\Models\category;
 use App\Models\Country;
-use App\Models\Discount;
-use App\Models\Product;
+use App\Models\discount;
+use App\Models\product;
 use Carbon\Carbon;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Validator;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Validate;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 
 class ProductForm extends Component
 {
     use WithFileUploads;
+    public string $name = '', $description = '';
+    public $image = [];
+    public ?float $price;
+    public ?int $country_id;
 
-    public string $name;
-    public string $description;
-    public int $price;
-    public int $country_id;
-    public array $categories = []; // Removed category_id property
-    public int $discount_id;
-    public bool $is_available = false;
-    public bool $is_in_stock = false;
-    public int $amount_in_stock = 0;
+    public array $categories = [], $listsForFields = [], $selected = [];
+    public ?int $discount_id = 0,
+        $amount_in_stock = 0,
+        $id;
+
+    public bool $is_available = false,
+        $editing = false,
+        $is_in_stock = false;
     public ?Carbon $modified_at = null;
-    public bool $editing = false;
-    public array $listsForFields = [];
-    public $image;
-    public ?Product $product;
-    protected $rules = [
-        'name' => 'required|string|min:3|max:255|unique:products,name',
-        'description' => 'required|string|min:3|max:255',
-        'price' => 'required|numeric|min:0',
-        'country_id' => 'required|integer|exists:countries,id',
-        'categories' => 'required|array|min:1', // Updated validation rule
-        'discount_id' => 'nullable|integer|exists:discounts,id',
-        'image' => 'nullable|image|max:1024|mimes:png,jpg,jpeg,gif,svg',
-    ];
+    public ?Product $product = null;
 
-    public function mount(Product $product = null ): void
+
+    public function mount(product $product): void
     {
         $this->id = $product->id ?? null;
         $this->initListsForFields();
         $this->editing = isset($this->id);
-        $this->fill([
-            'description' => '',
-            'price' => 0,
-            'country_id' => 0,
-            'categories' => [],
-            'name' => '',
-            'discount_id' => 0,
-        ]);
 
-        if ($this->editing) {
-            $this->categories = $this->product->categories->pluck('id')->toArray();
+        if (!is_null($this->product)) {
+            $this->product = $product;
+            $this->editing = true;
+
+            $this->name = $this->product->name;
+            $this->description = $this->product->description;
+            $this->price = $this->product->price;
+            $this->country_id = $this->product->country_id;
+
+            $this->categories = $this->product->categories()->pluck('id')->toArray();
         }
     }
-
-    # [Title('Product Form')]
+    public function getSelectedCountProperty(): int
+    {
+        return count($this->selected);
+    }
     public function render()
     {
-        return view('livewire.product-form');
+        $previewUrls = [];
+        if (isset($this->photos)) {
+            foreach ($this->photos as $index => $photo) {
+                $previewUrls[$index] = $photo->temporaryUrl();
+            }
+        }
+        return view('livewire.product-form', compact('previewUrls'));
     }
-
-    public function initListsForFields(): void
+    protected function rules(): array
     {
-        $this->listsForFields['categories'] = Category::active()->pluck('name', 'id')->toArray();
-        $this->listsForFields['countries'] = Country::pluck('name', 'id')->toArray();
-        $this->listsForFields['discounts'] = Discount::pluck('discount_percent', 'id')->toArray();
+        return [
+            'name' => ['required', 'string'],
+            'description' => ['required'],
+            'country_id' => ['required', 'integer', 'exists:countries,id'],
+            'price' => ['required'],
+            'categories' => ['required', 'array'],
+            'categories.*' => ['integer', 'exists:categories,id'],
+            'discount_id' => ['nullable', 'integer', 'exists:discounts,id'],
+            'amount_in_stock' => ['required', 'integer'],
+            'image.*' => ['nullable', 'image', 'max:1024'],
+        ];
     }
+    #[On('deleteSelected')]
+    public function deleteSelected(): void
+    {
+        dd($this->selected);
+        $products = Product::whereIn('id', $this->selected)->get();
 
+        $products->each->delete();
+
+        $this->reset('selected');
+    }
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['countries'] = Country::pluck('name', 'id')->toArray();
+        $this->listsForFields['categories'] = category::active()->pluck('name', 'id')->toArray();
+        $this->listsForFields['discounts'] = discount::pluck('discount_percent', 'id')->toArray();
+    }
+    #[On('delete')]
+    public function delete(int $id): void
+    {
+        $product = Product::findOrFail($id);
+
+        $product->delete();
+    }
     public function save()
     {
         $this->validate();
@@ -92,9 +117,12 @@ class ProductForm extends Component
             'modified_at' => Carbon::now(),
         ]);
 
+
         if ($this->image) {
-            $imagePath = $this->image->store('products', 'public');
-            $product->image = $imagePath;
+            foreach ($this->image as $image) {
+                $imagePath = $image->store('products', 'public');
+                $product->image = $imagePath;
+            }
         }
 
         $product->save();

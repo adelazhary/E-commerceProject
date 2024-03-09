@@ -7,6 +7,7 @@ use App\Models\category;
 use App\Models\Country;
 use App\Models\product;
 use Illuminate\Http\Response;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -40,25 +41,26 @@ class ProductsList extends Component
     {
         $this->resetPage();
     }
-
-    public function deleteProduct($productId): void
+    public function deleteConfirm(string $method, $id = null): void
     {
-        // dd($productId);
-        if (is_array($productId)) {
-            $this->selected = $productId;
-        } else {
-            $this->selected = [$productId];
+        $this->dispatch('swal:confirm', [
+            'type'  => 'warning',
+            'title' => 'Are you sure?',
+            'text'  => '',
+            'id'    => $id,
+            'method' => $method,
+        ]);
+    }
+    #[On('delete')]
+    public function delete(int $id): void
+    {
+        $product = Product::findOrFail($id)->with('orders');
+        // ->where('id',$id);
+        if ($product->orders()->exists()) {
+            $this->addError("orderexist", "Product <span class='font-bold'>{$product->name}</span> cannot be deleted, it already has orders");
+            return;
         }
-        // dd($this->selected);
-        $products = product::whereIn('id', $this->selected)->get();
-        // dd($products);
-        if ($products == null || $products->isEmpty()) {
-            session()->flash('message', 'There are No Selected Product found!');
-        } else {
-            $products->each->delete();
-            $this->reset('selected');
-            session()->flash('message', 'Product deleted successfully!');
-        }
+        $product->delete();
     }
     public function sortByColumn($column): void
     {
@@ -75,16 +77,21 @@ class ProductsList extends Component
     {
         return count($this->selected);
     }
+    #[On('deleteSelected')]
     public function deleteSelected(): void
     {
-        $products = Product::with('orders')->whereIn('id', $this->selected)->get();
-        foreach ($products as $product) {
-            if ($product->orders()->exists()) {
-                $this->addError("orderexist", "Product <span class='font-bold'>{$product->name}</span> cannot be deleted, it already has orders");
-                return;
-            }
-        }
+        // $products = Product::with('orders')->whereIn('id', $this->selected)->get();
+        // foreach ($products as $product) {
+        //     if ($product->orders()->exists()) {
+        //         $this->addError("orderexist", "Product <span class='font-bold'>{$product->name}</span> cannot be deleted, it already has orders");
+        //         return;
+        //     }
+        // }
+        $products = Product::whereIn('id', $this->selected)->get();
+
         $products->each->delete();
+
+        $this->reset('selected');
     }
     protected $queryString = [
         'sortColumn' => [

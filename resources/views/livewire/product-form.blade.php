@@ -22,13 +22,27 @@
                         <div class="mt-4">
                             <x-input-label for="image" :value="__('Image')" />
                             <button type="submit">Upload Image</button>
-                            <input wire:model="image" type="file" id="image" name="image" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                            <input wire:model="image" type="file" id="image" name="image"
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                multiple />
                             <x-input-error :messages="$errors->get('image')" class="mt-2" />
                         </div>
                         @if ($image)
-                        <div wire:loading wire:target="photo">Uploading...</div>                            <div class="mt-4">
-                                <img src="{{ $image->temporaryUrl() }}" alt="image" class="w-20 h-20">
+                            <div wire:loading wire:target="photo">Uploading...</div>
+                            <div class="flex items-center mt-4">
+                                @foreach ($image as $index => $item)
+                                    <img src="{{ $item->temporaryUrl() }}" alt="image"
+                                        class="w-20 h-20 rounded-full mr-4"
+                                        style="{{ $index > 0 ? 'transform: translateX(-8px)' : '' }}">
+                                @endforeach
                             </div>
+                            @error('image.*')
+                                <ul class="text-red-500 list-disc pl-4">
+                                    @foreach ($errors->get('image.*') as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            @enderror
                         @endif
                         <div class="mt-4">
                             <x-input-label for="description" :value="__('Description')" />

@@ -133,13 +133,12 @@
                                 @foreach ($products as $product)
                                     <tr class="bg-white">
                                         <td class="px-4 py-2 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <input type="checkbox" value="{{ $product->id }}" wire:model="selected">
+                                            <input type="checkbox" value="{{ $product->id }}" wire:model.live="selected">
                                         </td>
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                                             {{ $product->name }}
                                         </td>
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            {{ 'gff' }}
                                             @foreach ($product->categories as $category)
                                                 <span
                                                     class="px-2 py-1 text-xs text-indigo-700 bg-indigo-200 rounded-md">{{ $category->id }}</span>
@@ -156,9 +155,8 @@
                                                 class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700">
                                                 Edit
                                             </a>
-                                            <button wire:click="deleteProduct({{ $product->id }})"
-                                                wire:loading.attr="disabled"
-                                                wire:target="deleteProduct({{ $product->id }})"
+                                            <button wire:click="delete({{ $product->id }})"
+                                                wire:target="deleteConfirm({{ $product->id }})"
                                                 wire:loading.class="opacity-50 cursor-not-allowed"
                                                 wire:loading.class.remove="opacity-50 cursor-not-allowed"
                                                 wire:loading.class.add="opacity-50 cursor-not-allowed"
