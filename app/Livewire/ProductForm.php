@@ -75,6 +75,7 @@ class ProductForm extends Component
             'discount_id' => ['nullable', 'integer', 'exists:discounts,id'],
             'amount_in_stock' => ['required', 'integer'],
             'image.*' => ['nullable', 'image', 'max:1024'],
+
         ];
     }
     #[On('deleteSelected')]
@@ -119,10 +120,12 @@ class ProductForm extends Component
 
 
         if ($this->image) {
+            $imagePaths = [];
             foreach ($this->image as $image) {
                 $imagePath = $image->store('products', 'public');
-                $product->image = $imagePath;
+                $imagePaths[] = $imagePath;
             }
+            $this->image = $imagePaths;
         }
 
         $product->save();

@@ -9,6 +9,20 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
+                    @if ($errors->any())
+                        <div class="alert alert-error"> <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                height="16" fill="currentColor" class="mr-2" viewBox="0 0 1792 1792">
+                                <path
+                                    d="M896 1376l-480-480q-14-14-14-39v-64q0-15 14-39t39-14v-80q0-15 14-39t39-14h64q15 0 39 14t39 14v80q0 15 14 39t14 39v64q0 25-14 39t-39 14l-480 480q-14 14-39 14t-39-14zM1024 256q128 0 224 96t96 224v1024q0 128-96 224t-224 96h-1024q-128 0-224-96t-96-224v-1024q0-128 96-224t224-96h704z" />
+                            </svg>
+                            <ul class="list-disc pl-4 text-red-500">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form wire:submit.prevent="save" enctype="multipart/form-data">
                         @csrf
 
@@ -36,13 +50,6 @@
                                         style="{{ $index > 0 ? 'transform: translateX(-8px)' : '' }}">
                                 @endforeach
                             </div>
-                            @error('image.*')
-                                <ul class="text-red-500 list-disc pl-4">
-                                    @foreach ($errors->get('image.*') as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            @enderror
                         @endif
                         <div class="mt-4">
                             <x-input-label for="description" :value="__('Description')" />

@@ -62,6 +62,13 @@ class product extends Model
 
         );
     }
+    protected function name(): Attribute{
+        return Attribute::make(
+            get: fn($value) => ucwords($value),
+            set: fn($value) => ucwords($value),
+        );
+    }
+
     /**
      * The categories that belong to the product
      *

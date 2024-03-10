@@ -1,14 +1,14 @@
 <div class="w-full bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center justify-between p-4">
     <a href="{{ route('product.show', $product->id) }}">
-        <img class="w-full h-48 object-cover rounded-t-lg"
-            src="{{ storage_path('app/public/products/' . $product->image) }}" alt="{{ $product->title }}">
-        {{ Storage::url('products\'' . $product->image) }}
+        {{-- <img class="w-full h-48 object-cover rounded-t-lg" src="{{ Storage::url('products/' . $product->image) }}"
+            alt="{{ $product->name }}"> --}}
+        <img src="{{ asset('storage/products/' . $product->image) }}" alt="Product Image">
     </a>
     <div class="flex flex-col justify-between p-4">
         <div class="text-lg font-semibold text-gray-800">{{ $product->title }}</div>
         <div class="flex items-center justify-between mt-2 text-gray-500">
             <span>{{ $product->created_at->diffForHumans() }}</span>
-            <span class="text-green-500 font-semibold text-xl">{{ $product->price }}</span>
+            <span class="text-green-500 font-semibold text-xl">${{ number_format($product->price / 100, 2) }}</span>
         </div>
         <a href="{{ route('cart.add', $product->id) }}"
             class="mt-4 inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700">
