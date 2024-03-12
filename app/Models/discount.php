@@ -16,4 +16,9 @@ class discount extends Model
         'modified_at',
         'discount_percent'
     ];
+
+    public function scopeActive($query)
+    {
+        $query->where('active', 1);
+    }
 }

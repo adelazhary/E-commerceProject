@@ -30,7 +30,6 @@ class ProductForm extends Component
     public ?Carbon $modified_at = null;
     public ?Product $product = null;
 
-
     public function mount(product $product): void
     {
         $this->id = $product->id ?? null;
@@ -49,10 +48,6 @@ class ProductForm extends Component
             $this->categories = $this->product->categories()->pluck('id')->toArray();
         }
     }
-    public function getSelectedCountProperty(): int
-    {
-        return count($this->selected);
-    }
     public function render()
     {
         $previewUrls = [];
@@ -63,6 +58,10 @@ class ProductForm extends Component
         }
         return view('livewire.product-form', compact('previewUrls'));
     }
+    public function getSelectedCountProperty(): int
+    {
+        return count($this->selected);
+    }
     protected function rules(): array
     {
         return [
@@ -70,8 +69,8 @@ class ProductForm extends Component
             'description' => ['required'],
             'country_id' => ['required', 'integer', 'exists:countries,id'],
             'price' => ['required'],
-            'categories' => ['required', 'array'],
-            'categories.*' => ['integer', 'exists:categories,id'],
+            // 'categories' => ['required', 'array'],
+            'categories.*' => ['integer'],
             'discount_id' => ['nullable', 'integer', 'exists:discounts,id'],
             'amount_in_stock' => ['required', 'integer'],
             'image.*' => ['nullable', 'image', 'max:1024'],
@@ -104,7 +103,6 @@ class ProductForm extends Component
     public function save()
     {
         $this->validate();
-
         $product = $this->editing ? Product::findOrFail($this->id) : new Product();
         $product->fill([
             'name' => $this->name,
@@ -122,7 +120,7 @@ class ProductForm extends Component
         if ($this->image) {
             $imagePaths = [];
             foreach ($this->image as $image) {
-                $imagePath = $image->store('products', 'public');
+                $imagePath = $image->store('product', 'public');
                 $imagePaths[] = $imagePath;
             }
             $this->image = $imagePaths;

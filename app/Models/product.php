@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class product extends Model
@@ -104,5 +105,8 @@ class product extends Model
     public function getExcerptAttribute()
     {
         return Str::limit($this->description, 200);
+    }
+    public function images(): HasMany{
+        return $this->hasMany(ProductImage::class);
     }
 }

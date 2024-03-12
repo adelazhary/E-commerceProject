@@ -37,7 +37,7 @@ Route::get('/register', 'RegistrationController@showRegistrationForm')->name('re
 require __DIR__ . '/auth.php';
 route::group(['middleware' => ['auth','throttle:rate_limit,10']], function () {
     Route::get('categories', CategoriesList::class)->name('categories.index');
-    Route::get('products', ProductsList::class)->name('products.index');
+    Route::get('products/', ProductsList::class)->name('products.index.list');
 
     Route::get('orders', OrdersList::class)->name('orders.index');
     Route::get('orders/create', OrderForm::class)->name('orders.create');
@@ -51,6 +51,5 @@ route::group(['middleware' => ['auth','throttle:rate_limit,10']], function () {
     Route::get('discounts', Discounts::class)->name('discounts.index');
     Route::get('discount/create', DiscountForm::class)->name('discounts.create');
 
-    Route::get('images', Image::class)->name('images.index');
     Route::get('cart/add')->name('cart.add');
 });

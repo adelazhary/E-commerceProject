@@ -26,18 +26,15 @@
                     <div
                         class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
 
-                        <form action="{{ route('discounts.create') }}" method="GET">
-                            @csrf
-                            <button type="submit"
-                                class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path clip-rule="evenodd" fill-rule="evenodd"
-                                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                </svg>
-                                Add new Discount
-                            </button>
-                        </form>
+                        <button wire:click="openModal"
+                            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                            </svg>
+                            Add new Discount
+                        </button>
                         <button type="button"
                             class="flex items-center justify-center flex-shrink-0 px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                             <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
@@ -101,22 +98,19 @@
                                         <div class="flex items-center">
                                             <div
                                                 class="inline-block relative mr-2 w-10 align-middle transition duration-200 ease-in select-none">
-                                                {{-- <input wire:model.live="active"
+                                                <input wire:model="active.{{ $discount->id }}"
                                                     wire:click="toggleIsActive({{ $discount->id }})" type="checkbox"
                                                     name="toggle" id="{{ $loop->index . $discount->id }}"
-                                                    class="block absolute w-6 h-6 bg-white rounded-full border-4 appearance-none cursor-pointer focus:outline-none toggle-checkbox" /> --}}
-                                                <input wire:model="active"
-                                                    wire:click="toggleIsActive({{ $discount->id }})" type="checkbox"
-                                                    name="toggle" id="active"
                                                     class="block absolute w-6 h-6 bg-white rounded-full border-4 appearance-none cursor-pointer focus:outline-none toggle-checkbox" />
-                                                <label for="active"
+                                                <label for="{{ $loop->index . $discount->id }}"
                                                     class="block overflow-hidden h-6 bg-gray-300 rounded-full cursor-pointer toggle-label"></label>
                                             </div>
 
                                         </div>
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        1.47</td>
+                                        {{ $discount->discount_percent . '%' }}
+                                    </td>
 
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $discount->created_at->diffForHumans() }}
@@ -129,61 +123,121 @@
                 <nav class="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0"
                     aria-label="Table navigation">
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                        Showing
-                        <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                        of
-                        <span class="font-semibold text-gray-900 dark:text-white">1000</span>
+                        {{ $discounts->links() }}
                     </span>
-                    <ul class="inline-flex items-stretch -space-x-px">
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Previous</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                                class="z-10 flex items-center justify-center px-3 py-2 text-sm leading-tight border text-primary-600 bg-primary-50 border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Next</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
                 </nav>
             </div>
         </div>
     </section>
+    //
+    <div
+        class="@if (!$showModal) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
+        <div class="w-1/2 bg-white rounded-lg">
+            <form wire:submit.prevent="save" class="w-full">
+                <div class="flex flex-col items-start p-4">
+                    @if ($errors->any())
+                        <div class="alert alert-error"> <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                height="16" fill="currentColor" class="mr-2" viewBox="0 0 1792 1792">
+                                <path
+                                    d="M896 1376l-480-480q-14-14-14-39v-64q0-15 14-39t39-14v-80q0-15 14-39t39-14h64q15 0 39 14t39 14v80q0 15 14 39t14 39v64q0 25-14 39t-39 14l-480 480q-14 14-39 14t-39-14zM1024 256q128 0 224 96t96 224v1024q0 128-96 224t-224 96h-1024q-128 0-224-96t-96-224v-1024q0-128 96-224t224-96h704z" />
+                            </svg>
+                            <ul class="list-disc pl-4 text-red-500">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <div class="flex items-center pb-4 mb-4 w-full border-b">
+                        <div class="text-lg font-medium text-gray-900">Create Discount</div>
+                        <svg wire:click.prevent="$set('showModal', false)"
+                            class="ml-auto w-6 h-6 text-gray-700 cursor-pointer fill-current"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                            <path
+                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+                        </svg>
+                    </div>
+                    <div class="mb-2 w-full">
+                        <label class="block text-sm font-medium text-gray-700" for="name">
+                            Name
+                        </label>
+                        <input wire:model.live.debounce="name" id="name"
+                            class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
+                        @error('name')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-2 w-full">
+                        <label class="block text-sm font-medium text-gray-700" for="description">
+                            Description
+                        </label>
+                        <input wire:model="discription" id="description"
+                            class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
+                        @error('description')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-2 w-full">
+                        <label class="block text-sm font-medium text-gray-700" for="discount_percent">
+                            Discount (%)
+                        </label>
+                        <input wire:model.live.debounce="discount_percent" id="discount_percent" type="number"
+                            class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
+                        @error('discount_percent')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-2 w-full flex space-x-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700" for="start_date">
+                                Start Date
+                            </label>
+                            <input wire:model="start_date" id="start_date" type="date"
+                                class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
+                            @error('start_date')
+                                <span class="text-sm text-red-500">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-</div>
-</div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700" for="end_date">
+                                End Date
+                            </label>
+                            <input wire:model="end_date" id="end_date" type="date"
+                                class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
+                            @error('end_date')
+                                <span class="text-sm text-red-500">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-2 w-full">
+                        <label class="block text-sm font-medium text-gray-700" for="active">
+                            Active
+                        </label>
+                        <select wire:model.live="DiscActive" id="active" name="actives[]"
+                            class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                        @error('active')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
+
+                        <div class="mt-4 ml-auto">
+                            <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                                type="submit">
+                                Create
+                            </button>
+                            <button wire:click="$set('showModal', false)"
+                                class="px-4 py-2 font-bold text-white bg-gray-500 rounded" type="button"
+                                data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+
+        </div>
