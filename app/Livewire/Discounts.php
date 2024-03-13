@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\discount;
+use Carbon\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -17,10 +18,22 @@ class Discounts extends Component
     public $discription;
     public $modified_at;
     public $showModal = false;
-    public $start_date;
-    public $end_date;
-    public function mount()
+    public string $start_date, $end_date;
+    public discount $discount;
+    public function mount(discount $discount)
     {
+        if($discount->id){
+            $this->name = $discount->name;
+            $this->discount_percent = $discount->discount_percent;
+            $this->active = 1;
+            $this->discription = $discount->discription;
+            $this->modified_at = $discount->modified_at;
+            $this->start_date = $discount->start_date;
+            $this->end_date = $discount->end_date;
+        }else{
+            $this->start_date = today();
+            $this->reset();
+        }
         $this->name = ' ';
         $this->discount_percent = 0;
         $this->discription = '';
@@ -47,7 +60,6 @@ class Discounts extends Component
         return [
             'name' => 'required',
             'discount_percent' => 'required|numeric',
-            'active.*' => 'boolean',
             'discription' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
@@ -55,18 +67,25 @@ class Discounts extends Component
     }
     public function save()
     {
+        // dd($this->start_date, $this->end_date);
 
         $this->validate();
-        $activeJson = json_encode($this->active);
-        // dd($this->DiscActive);
-        discount::create([
-            'name' => $this->name,
-            'discount_percent' => $this->discount_percent,
-            'active' => 1,
-            'discription' => $this->discription,
-            'start_date' => $this->start_date,
-            'end_date' => date('Y-m-d', strtotime($this->start_date . ' + 1 day'))
-        ]);
+
+        $this->discount = new discount();
+        $this->discount->name = $this->name;
+        $this->discount->discount_percent = $this->discount_percent;
+        $this->discount->active = 1;
+        $this->discount->discription = $this->discription;
+        $this->discount->modified_at = now();
+        // $this->discount->start_date = $this->start_date;
+        // $this->discount->end_date = $this->end_date;
+        $this->discount->save();
+        // discount::updateOrcreate($this->only('name',
+        //     'discount_percent',
+        //     'discription',
+        //     'start_date',
+        //     'end_date',
+        // ));
         $this->reset();
     }
     public function openModal()

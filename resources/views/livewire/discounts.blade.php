@@ -70,6 +70,8 @@
                                 <th scope="col" class="px-4 py-3">discription</th>
                                 <th scope="col" class="px-4 py-3">Active</th>
                                 <th scope="col" class="px-4 py-3">Discount Percent</th>
+                                <th scope="col" class="px-4 py-3">Starting Date</th>
+                                <th scope="col" class="px-4 py-3">Ending Date</th>
                                 <th scope="col" class="px-4 py-3">Last Update</th>
                             </tr>
                         </thead>
@@ -110,6 +112,12 @@
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $discount->discount_percent . '%' }}
+                                    </td>
+                                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $discount->start_date }}
+                                    </td>
+                                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $discount->end_date }}
                                     </td>
 
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -187,57 +195,45 @@
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
+
                     <div class="mb-2 w-full flex space-x-4">
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700" for="start_date">
-                                Start Date
-                            </label>
-                            <input wire:model="start_date" id="start_date" type="date"
-                                class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
-                            @error('start_date')
-                                <span class="text-sm text-red-500">{{ $message }}</span>
-                            @enderror
+                            <x-input-label class="mb-1" for="start_date" :value="__('Start date')" />
+
+                            <input x-data x-init="new Pikaday({ field: $el, format: 'MM/DD/YYYY' })" type="text" id="start_date"
+                                wire:model.lazy="start_date" autocomplete="off"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                            <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700" for="end_date">
-                                End Date
-                            </label>
-                            <input wire:model="end_date" id="end_date" type="date"
-                                class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400" />
-                            @error('end_date')
-                                <span class="text-sm text-red-500">{{ $message }}</span>
-                            @enderror
+                            <x-input-label class="mb-1" for="end_date" :value="__('End date')" />
+
+                            <input x-data x-init="new Pikaday({ field: $el, format: 'MM/DD/YYYY' })" type="text" id="end_date"
+                                wire:model.lazy="end_date" autocomplete="off"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                            <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
                         </div>
                     </div>
 
-                    <div class="mb-2 w-full">
-                        <label class="block text-sm font-medium text-gray-700" for="active">
-                            Active
-                        </label>
-                        <select wire:model.live="DiscActive" id="active" name="actives[]"
-                            class="py-2 pr-4 pl-2 mt-2 w-full text-sm rounded-lg border border-gray-400 sm:text-base focus:outline-none focus:border-blue-400">
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                        </select>
-                        @error('active')
-                            <span class="text-sm text-red-500">{{ $message }}</span>
-                        @enderror
-
-                        <div class="mt-4 ml-auto">
-                            <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-                                type="submit">
-                                Create
-                            </button>
-                            <button wire:click="$set('showModal', false)"
-                                class="px-4 py-2 font-bold text-white bg-gray-500 rounded" type="button"
-                                data-dismiss="modal">
-                                Close
-                            </button>
-                        </div>
-
-
+                    <div class="mt-4 ml-auto">
+                        <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                            type="submit">
+                            Create
+                        </button>
+                        <button wire:click="$set('showModal', false)"
+                            class="px-4 py-2 font-bold text-white bg-gray-500 rounded" type="button"
+                            data-dismiss="modal">
+                            Close
+                        </button>
                     </div>
+
+
                 </div>
-
         </div>
+
+    </div>
+    @push('js')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+    @endpush

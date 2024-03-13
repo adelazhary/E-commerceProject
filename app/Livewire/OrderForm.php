@@ -29,7 +29,6 @@ class OrderForm extends Component
     {
         $this->initListsForFields();
         $this->order = $order;
-        echo $this->order;
         if (!$this->order) {
             $this->order = $order;
             $this->editing = true;
