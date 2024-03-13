@@ -57,23 +57,38 @@ new #[Layout('layouts.guest')] class extends Component {
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-4">
+            <x-primary-button>
+                {{ __('Log in') }}
+            </x-primary-button>
+
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     href="{{ route('password.request') }}" wire:navigate>
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
         </div>
     </form>
 
-    <form action="{{ route('register') }}">
-        <x-primary-button class="ms-4 mx-auto">
-            {{ __('Register Here if you Dont Have an account') }}
-        </x-primary-button>
-    </form>
+    <div class="mt-6 text-center">
+        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Don\'t have an account?') }}</p>
+        <form action="{{ route('register') }}">
+            <x-primary-button class="mt-2 mx-auto block">
+                {{ __('Register Here') }}
+            </x-primary-button>
+        </form>
+    </div>
+
+    <div class="mt-8 flex justify-center space-x-4">
+        {{-- <a href="{{ route('social.login', 'google') }}"> --}}
+        <img src="https://developers.google.com/identity/branding/logos/google.svg" alt="Google Login" width="32"
+            height="32">
+        {{-- </a> --}}
+        {{-- <a href="{{ route('social.login', 'github') }}"> --}}
+        <img src="https://github.com/assets/images/modules/logos/GitHub-Mark.png" alt="Github Login" width="32"
+            height="32">
+        {{-- </a> --}}
+    </div>
+</div>
 </div>

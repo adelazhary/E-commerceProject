@@ -13,6 +13,7 @@ use App\Livewire\ProductForm;
 use App\Livewire\ProductsList;
 use App\Livewire\UploadImage;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,7 @@ Route::view('profile', 'profile')
 // routes/web.php
 Route::get('/register', 'RegistrationController@showRegistrationForm')->name('register');
 require __DIR__ . '/auth.php';
-route::group(['middleware' => ['auth','throttle:rate_limit,10']], function () {
+route::group(['middleware' => ['auth', 'throttle:rate_limit,10']], function () {
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products/', ProductsList::class)->name('products.index.list');
 
@@ -52,4 +53,21 @@ route::group(['middleware' => ['auth','throttle:rate_limit,10']], function () {
     Route::get('discount/create', DiscountForm::class)->name('discounts.create');
 
     Route::get('cart/add')->name('cart.add');
+    // routes/web.php
+    Route::get('/login/google', function () {
+        return Socialite::driver('google')->redirect();
+    });
+    Route::get('/login/google/callback', function () {
+        $user = Socialite::driver('google')->user();
+        // Process the user data and login/register the user
+        return "You're logged in using Google! (user data: $user)";
+    });
+    Route::get('/login/github', function () {
+        return Socialite::driver('github')->redirect();
+    });
+    Route::get('/login/github/callback', function () {
+        $user = Socialite::driver('github')->user();
+        // Process the user data and login/register the user
+        return "You're logged in using Github! (user data: $user)";
+    });
 });
