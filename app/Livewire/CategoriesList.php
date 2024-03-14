@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\imageUplaod;
 use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -98,6 +99,8 @@ class CategoriesList extends Component
                 'description' => $this->description,
                 'is_active' => $this->active[$this->editedCategoryId] ?? '0',
             ]);
+            imageUplaod::dispatch('high')->onQueue('high');
+            imageUplaod::dispatch('low')->onQueue('low');
             $this->reset('showModal', 'editedCategoryId');
         }
     }
