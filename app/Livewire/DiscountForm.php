@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\imageUplaod;
 use App\Models\discount;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -40,6 +41,7 @@ class DiscountForm extends Component
             'discount_percent' => $this->discount_percent,
             'discription' => $this->discription,
         ]);
+        imageUplaod::dispatch();
         $this->reset();
     }
 
