@@ -30,13 +30,14 @@ Route::view('/', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
 // routes/web.php
 Route::get('/register', 'RegistrationController@showRegistrationForm')->name('register');
 require __DIR__ . '/auth.php';
+
 route::group(['middleware' => ['auth', 'throttle:rate_limit,10']], function () {
+    Route::view('profile', 'profile')
+        ->name('profile');
+
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products/', ProductsList::class)->name('products.index.list');
 
@@ -70,4 +71,14 @@ route::group(['middleware' => ['auth', 'throttle:rate_limit,10']], function () {
         // Process the user data and login/register the user
         return "You're logged in using Github! (user data: $user)";
     });
+});
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+
+    // $user->token
 });
