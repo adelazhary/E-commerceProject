@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\SocialLoginController;
 use App\Livewire\CategoriesList;
 use App\Livewire\DiscountForm;
 use App\Livewire\Discounts;
@@ -11,9 +13,7 @@ use App\Livewire\OrdersList;
 use App\Livewire\ProductDetails;
 use App\Livewire\ProductForm;
 use App\Livewire\ProductsList;
-use App\Livewire\UploadImage;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,46 +39,42 @@ route::group(['middleware' => ['auth', 'throttle:rate_limit,10']], function () {
         ->name('profile');
 
     Route::get('categories', CategoriesList::class)->name('categories.index');
-    Route::get('products/', ProductsList::class)->name('products.index.list');
 
-    Route::get('orders', OrdersList::class)->name('orders.index');
-    Route::get('orders/create', OrderForm::class)->name('orders.create');
-    Route::get('orders/{order}', OrderForm::class)->name('orders.edit');
+    /* These routes are defining the following actions related to orders: */
 
-    Route::get('products/create', ProductForm::class)->name('products.create');
-    Route::get('products/{product}/edit', ProductForm::class)->name('products.edit');
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', OrdersList::class)->name('index');
+        Route::get('/create', OrderForm::class)->name('create');
+        Route::get('/{order}', OrderForm::class)->name('edit');
+    });
 
-    Route::get('products/{id}', ProductDetails::class)->name('product.show');
+    /* These routes are defining the actions related to products in the application: */
 
-    Route::get('discounts', Discounts::class)->name('discounts.index');
-    Route::get('discount/create', DiscountForm::class)->name('discounts.create');
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', ProductsList::class)->name('index.list');
+        Route::get('/{product}/edit', ProductForm::class)->name('edit');
+        Route::get('/{id}', ProductDetails::class)->name('show');
+        Route::get('/create', ProductForm::class)->name('create');
+    });
+    /* These routes are defining the actions related to discounts in the application. */
+    Route::prefix('discounts')->name('discounts.')->group(function () {
+        Route::get('/', Discounts::class)->name('index');
+        Route::get('/create', DiscountForm::class)->name('create');
+        Route::get('/{discount}', DiscountForm::class)->name('edit');
+    });
 
     Route::get('cart/add')->name('cart.add');
-    // routes/web.php
-    Route::get('/login/google', function () {
-        return Socialite::driver('google')->redirect();
-    });
-    Route::get('/login/google/callback', function () {
-        $user = Socialite::driver('google')->user();
-        // Process the user data and login/register the user
-        return "You're logged in using Google! (user data: $user)";
-    });
-    Route::get('/login/github', function () {
-        return Socialite::driver('github')->redirect();
-    });
-    Route::get('/login/github/callback', function () {
-        $user = Socialite::driver('github')->user();
-        // Process the user data and login/register the user
-        return "You're logged in using Github! (user data: $user)";
-    });
 });
+/* This block of code is defining routes for social login functionality using OAuth providers like
+Google and GitHub. Here's a breakdown of what each part is doing: */
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('github')->redirect();
-});
+Route::controller(SocialiteController::class)->prefix('/auth/{driver}/')->name('socialite.')->group(function () {
 
-Route::get('/auth/callback', function () {
-    $user = Socialite::driver('github')->user();
+    Route::get('redirect', 'redirect')
+        ->name('redirect')
+        ->whereIn('driver', ['google|github']);
 
-    // $user->token
+    Route::get('callback', 'callback')
+        ->name('callback')
+        ->whereIn('driver', ['google|github']);
 });

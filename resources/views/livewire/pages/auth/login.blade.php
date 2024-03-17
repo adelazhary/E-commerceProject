@@ -80,15 +80,23 @@ new #[Layout('layouts.guest')] class extends Component {
         </form>
     </div>
 
-    <div class="mt-8 flex justify-center space-x-4">
-        {{-- <a href="{{ route('social.login', 'google') }}"> --}}
-        <img src="https://developers.google.com/identity/branding/logos/google.svg" alt="Google Login" width="32"
-            height="32">
-        {{-- </a> --}}
-        {{-- <a href="{{ route('social.login', 'github') }}"> --}}
-        <img src="https://github.com/assets/images/modules/logos/GitHub-Mark.png" alt="Github Login" width="32"
-            height="32">
-        {{-- </a> --}}
+    <div class="flex items-center space-x-4">
+        <a href="{{ route('socialite.redirect', 'github') }}"
+            class="flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 shadow-md px-4 py-2">
+            <svg class="w-6 h-6 fill-current text-gray-700" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                    d="M12 2C6.13 2 2 6.13 2 12s4.13 10 10 10 10-4.13 10-10-4.13-10-10-10zm-2.25 7c.7-1.3 2.25-2.5 3.5-2.5s2.75 1.2 3.5 2.5 1.25 2.75 2.5 3.5c-.7 1.3-2.25 2.5-3.5 2.5s-2.75-1.2-3.5-2.5-1.25-2.75-2.5-3.5z"
+                    clip-rule="evenodd" />
+            </svg>
+            <span class="ml-2 text-sm font-medium text-gray-700">Continue with GitHub</span>
+        </a>
+
+        <a href="{{ route('socialite.redirect', 'google') }}">
+            <x-secondary-button>
+                <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/sign_in-svg2.svg" alt="Google Login">
+                <span>Continue with Google</span>
+            </x-secondary-button>
+        </a>
     </div>
 </div>
 </div>
